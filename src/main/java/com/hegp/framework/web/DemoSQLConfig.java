@@ -35,14 +35,6 @@ public class DemoSQLConfig extends AbstractSQLConfig {
 				return new DemoSQLConfig(method, table);
 			}
 
-			//取消注释来实现自定义各个表的主键名
-			//			@Override
-			//			public String getIdKey(String schema, String table) {
-			//				return StringUtil.firstCase(table + "Id");  // userId, comemntId ...
-			//				//		return StringUtil.toLowerCase(t) + "_id";  // user_id, comemnt_id ...
-			//				//		return StringUtil.toUpperCase(t) + "_ID";  // USER_ID, COMMENT_ID ...
-			//			}
-
 			@Override
 			public String getUserIdKey(String schema, String table) {
 				return Controller.USER_.equals(table) || Controller.PRIVACY_.equals(table) ? KEY_ID : KEY_USER_ID; // id / userId
@@ -51,12 +43,12 @@ public class DemoSQLConfig extends AbstractSQLConfig {
 		};
 	}
 
-	//取消注释后，默认的数据库类型会由 MySQL 改为 PostgreSQL
-	//	@Override
-	//	public String getDatabase() {
-	//		String db = super.getDatabase();
-	//		return db == null ? DATABASE_POSTGRESQL : db;
-	//	}
+	// 重写AbstractSQLConfig父类的getDatabase()方法，指定数据库类型
+	@Override
+	public String getDatabase() {
+		return "MYSQL";
+//		return "POSTGRESQL";
+	}
 
 	@Override
 	public String getDBUri() {

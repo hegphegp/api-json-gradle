@@ -2,6 +2,7 @@ package com.hegp;
 
 import com.hegp.framework.web.DemoFunction;
 import com.hegp.framework.web.StructureUtil;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,35 +15,19 @@ import com.hegp.framework.apijson.Log;
 
 @Configuration
 @SpringBootApplication
-public class Application {
+public class Application implements CommandLineRunner {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
-
-		Log.DEBUG = true; //上线生产环境前改为 false，可不输出 APIJSONORM 的日志 以及 SQLException 的原始(敏感)信息
-		
-		System.out.println("\n\n\n\n\n<<<<<<<<<<<<<<<<<<<<<<<<< APIJSON >>>>>>>>>>>>>>>>>>>>>>>>\n");
-		System.out.println("开始测试:远程函数 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
-		try {
-			DemoFunction.test();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.println("\n完成测试:远程函数 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-
-		System.out.println("\n\n\n开始测试:请求校验 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
-		try {
-			StructureUtil.test();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.println("\n完成测试:请求校验 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-		System.out.println("\n\n<<<<<<<<<<<<<<<<<<<<<<<<< APIJSON已启动 >>>>>>>>>>>>>>>>>>>>>>>>\n");
 	}
 
-	@Bean  
+	@Override
+	public void run(String... args) throws Exception {
+		Log.DEBUG = false; //上线生产环境前改为 false，可不输出 APIJSONORM 的日志 以及 SQLException 的原始(敏感)信息
+		StructureUtil.test();
+	}
+
+	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", buildConfig());

@@ -1,17 +1,3 @@
-/*Copyright ©2016 TommyLemon(https://github.com/TommyLemon/APIJSON)
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.*/
-
 package com.hegp.framework.web;
 
 import com.alibaba.fastjson.JSONObject;
@@ -38,8 +24,7 @@ public class StructureUtil {
 	 * @throws Exception
 	 */
 	public static void test() throws Exception {
-		JSONObject request;
-		
+
 		SQLCreator creator = new SQLCreator() {
 			
 			@Override
@@ -52,46 +37,65 @@ public class StructureUtil {
 				return new DemoSQLExecutor();
 			}
 		};
-		
+
 		try {
-			request = JSON.parseObject("{\"Comment\":{\"userId\":0}}");
-			Log.d(TAG, "test  parseRequest = " + Structure.parseRequest(RequestMethod.POST, "", JSON.parseObject(requestString), request, creator));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			request = JSON.parseObject("{\"Comment\":{\"userId\":0, \"momentId\":0, \"content\":\"apijson\"}}");
-			Log.d(TAG, "test  parseRequest = " + Structure.parseRequest(RequestMethod.POST, "", JSON.parseObject(requestString), request, creator));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			request = JSON.parseObject("{\"Comment\":{\"id\":0, \"userId\":0, \"momentId\":0, \"content\":\"apijson\"}}");
-			Log.d(TAG, "test  parseRequest = " + Structure.parseRequest(RequestMethod.POST, "", JSON.parseObject(requestString), request, creator));
+			JSONObject request = JSON.parseObject("{\"User\":{\"id\":0, \"name\":\"tommy\", \"phone\":\"12345678\", \"sex\":1}}");
+			System.out.println("============="+Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), request, creator, null));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 
+
+
+
+//		try {
+//			request = JSON.parseObject("{\"Comment\":{\"userId\":82001}}");
+//			Log.d(TAG, "test  parseRequest = " + Structure.parseRequest(RequestMethod.POST, "", JSON.parseObject(requestString), request, creator));
+//			System.out.println("0000000000000000000");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
+//		try {
+//			request = JSON.parseObject("{\"Comment\":{\"userId\":0}}");
+//			Log.d(TAG, "test  parseRequest = " + Structure.parseRequest(RequestMethod.POST, "", JSON.parseObject(requestString), request, creator));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		try {
+//			request = JSON.parseObject("{\"Comment\":{\"userId\":0, \"momentId\":0, \"content\":\"apijson\"}}");
+//			Log.d(TAG, "test  parseRequest = " + Structure.parseRequest(RequestMethod.POST, "", JSON.parseObject(requestString), request, creator));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		try {
+//			request = JSON.parseObject("{\"Comment\":{\"id\":0, \"userId\":0, \"momentId\":0, \"content\":\"apijson\"}}");
+//			Log.d(TAG, "test  parseRequest = " + Structure.parseRequest(RequestMethod.POST, "", JSON.parseObject(requestString), request, creator));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//
 		JSONObject response;
-		try {
-			response = JSON.parseObject("{\"User\":{\"userId\":0}}");
-			Log.d(TAG, "test  parseResponse = " + Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), response, creator, null));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			response = JSON.parseObject("{\"User\":{\"userId\":0, \"phone\":\"12345678\"}}");
-			Log.d(TAG, "test  parseResponse = " + Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), response, creator, null));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			response = JSON.parseObject("{\"User\":{\"userId\":0, \"phone\":\"12345678\", \"sex\":1}}");
-			Log.d(TAG, "test  parseResponse = " + Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), response, creator, null));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			response = JSON.parseObject("{\"User\":{\"userId\":0}}");
+//			Log.d(TAG, "test  parseResponse = " + Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), response, creator, null));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		try {
+//			response = JSON.parseObject("{\"User\":{\"userId\":0, \"phone\":\"12345678\"}}");
+//			Log.d(TAG, "test  parseResponse = " + Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), response, creator, null));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		try {
+//			response = JSON.parseObject("{\"User\":{\"userId\":0, \"phone\":\"12345678\", \"sex\":1}}");
+//			Log.d(TAG, "test  parseResponse = " + Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), response, creator, null));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		try {
 			response = JSON.parseObject("{\"User\":{\"id\":0, \"name\":\"tommy\", \"phone\":\"12345678\", \"sex\":1}}");
 			Log.d(TAG, "test  parseResponse = " + Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), response,creator, null));
