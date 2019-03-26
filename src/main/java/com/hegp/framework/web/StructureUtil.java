@@ -44,7 +44,9 @@ public class StructureUtil {
         };
 
         try {
-            String result = new DemoParser(RequestMethod.GET).parse("{ \"[]\": { \"page\":0, \"count\":100, \"User\": { \"sex\":0 } } }");
+//            String result = new DemoParser(RequestMethod.GET).parse("{ \"[]\": { \"page\":0, \"count\":100, \"User\": { \"sex\":0 } } }");
+//            String result = new DemoParser(RequestMethod.DELETE).parse("{ \"User\": { \"id\": 82001 } }");
+            String result = new DemoParser(RequestMethod.DELETE).parse("{ \"tag\": \"moment\" }");
             System.out.println(result);
         } catch (Exception e) {
             e.printStackTrace();

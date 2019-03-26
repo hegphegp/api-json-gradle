@@ -15,13 +15,13 @@ import com.hegp.framework.apijson.MethodAccess;
  * @author Lemon
  */
 @MethodAccess(
-        GET = {},
-        HEAD = {},
-        GETS = {UNKNOWN, LOGIN, CONTACT, CIRCLE, OWNER, ADMIN},
-        HEADS = {UNKNOWN, LOGIN, CONTACT, CIRCLE, OWNER, ADMIN},
-        POST = {UNKNOWN, LOGIN, CONTACT, CIRCLE, OWNER, ADMIN},
-        PUT = {ADMIN},
-        DELETE = {ADMIN}
+    GET = {},
+    HEAD = {},
+    GETS = {UNKNOWN, LOGIN, CONTACT, CIRCLE, OWNER, ADMIN},
+    HEADS = {UNKNOWN, LOGIN, CONTACT, CIRCLE, OWNER, ADMIN},
+    POST = {UNKNOWN, LOGIN, CONTACT, CIRCLE, OWNER, ADMIN},
+    PUT = {ADMIN},
+    DELETE = {ADMIN}
 )
 public class Verify extends BaseModel {
     private static final long serialVersionUID = 1L;

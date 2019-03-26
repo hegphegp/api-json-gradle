@@ -1,6 +1,5 @@
 package com.hegp;
 
-import com.hegp.framework.web.DemoFunction;
 import com.hegp.framework.web.StructureUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

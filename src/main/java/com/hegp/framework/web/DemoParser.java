@@ -37,13 +37,7 @@ public class DemoParser extends AbstractParser<Long> {
 
     public DemoParser setSession(HttpSession session) {
         this.session = session;
-        setVisitor(DemoVerifier.getVisitor(session));
         return this;
-    }
-
-    @Override
-    public DemoVerifier createVerifier() {
-        return new DemoVerifier();
     }
 
     @Override
@@ -134,10 +128,10 @@ public class DemoParser extends AbstractParser<Long> {
         super.onVerifyContent();
     }
 
-    //	//可重写来设置最大查询数量
-    //	@Override
-    //	public int getMaxQueryCount() {
-    //		return 50;
-    //	}
+//    // 可重写来设置最大查询数量
+//    @Override
+//    public int getMaxQueryCount() {
+//        return 50;
+//    }
 
 }

@@ -14,8 +14,8 @@ import com.hegp.framework.apijson.server.Visitor;
  * @author Lemon
  */
 @MethodAccess(
-        POST = {UNKNOWN, ADMIN},
-        DELETE = {ADMIN}
+    POST = {UNKNOWN, ADMIN},
+    DELETE = {ADMIN}
 )
 public class User extends BaseModel implements Visitor<Long> {
     private static final long serialVersionUID = 1L;

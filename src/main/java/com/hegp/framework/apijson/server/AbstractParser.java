@@ -39,26 +39,15 @@ import com.hegp.framework.apijson.server.exception.OutOfRangeException;
 public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
     protected static final String TAG = "AbstractParser";
 
-
-    /**
-     * GET
-     */
+    /** GET */
     public AbstractParser() {
         this(null);
     }
 
-    /**
-     * @param requestMethod null ? requestMethod = GET
-     */
     public AbstractParser(RequestMethod method) {
         this(method, false);
     }
 
-
-    /**
-     * @param requestMethod null ? requestMethod = GET
-     * @param noVerify      仅限于为服务端提供方法免验证特权，普通请求不要设置为true！ 如果对应Table有权限也建议用默认值false，保持和客户端权限一致
-     */
     public AbstractParser(RequestMethod method, boolean noVerify) {
         super();
         setMethod(method);
@@ -122,8 +111,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         return this;
     }
 
-
-    protected Verifier<T> verifier;
     protected RequestRole globleRole;
 
     public AbstractParser<T> setGlobleRole(RequestRole globleRole) {
@@ -268,13 +255,8 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
 
         requestObject = request;
 
-        verifier = createVerifier().setVisitor(getVisitor());
-
         if (RequestMethod.isPublicMethod(requestMethod) == false) {
             try {
-                if (noVerifyLogin == false) {
-                    onVerifyLogin();
-                }
                 if (noVerifyContent == false) {
                     onVerifyContent();
                 }
@@ -329,24 +311,7 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
 
         //会不会导致原来的session = null？		session = null;
 
-
-        Log.d(TAG, "\n\n\n\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n "
-                + requestMethod + "/parseResponse  request = \n" + requestString + "\n\n");
-
-        Log.d(TAG, "parse  return response = \n" + JSON.toJSONString(requestObject)
-                + "\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> \n\n\n");
-
-        long endTime = System.currentTimeMillis();
-        Log.d(TAG, "parseResponse  endTime = " + endTime + ";  duration = " + (endTime - startTime)
-                + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n\n");
-
         return globleFormat && JSONResponse.isSuccess(requestObject) ? new JSONResponse(requestObject) : requestObject;
-    }
-
-
-    @Override
-    public void onVerifyLogin() throws Exception {
-        verifier.verifyLogin();
     }
 
     @Override
@@ -381,7 +346,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
                     config.setRole(getVisitor().getId() == null ? RequestRole.UNKNOWN : RequestRole.LOGIN);
                 }
             }
-            verifier.verify(config);
         }
 
     }
@@ -525,8 +489,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
     /**
      * 获取正确的请求，非GET请求必须是服务器指定的
      *
-     * @param method
-     * @param request
      * @return
      * @throws Exception
      */
@@ -545,7 +507,7 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         JSONObject object = null;
         String error = "";
         try {
-            object = getStructure("Request", JSONRequest.KEY_TAG, tag, version);
+            object = getStructure("request", JSONRequest.KEY_TAG, tag, version);
         } catch (Exception e) {
             error = e.getMessage();
         }

@@ -49,10 +49,6 @@ public interface Parser<T> {
 
     Parser<T> setNoVerifyContent(boolean noVerifyContent);
 
-
-    @NotNull
-    Verifier<T> createVerifier();
-
     @NotNull
     SQLConfig createSQLConfig();
 
@@ -107,8 +103,6 @@ public interface Parser<T> {
 
     Object getValueByPath(String valuePath);
 
-
-    void onVerifyLogin() throws Exception;
 
     void onVerifyContent() throws Exception;
 

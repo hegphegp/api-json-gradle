@@ -338,24 +338,6 @@ public class DemoFunction extends RemoteFunction {
         return new JSONArray(new ArrayList<Object>(Arrays.asList(12, 15, 301, 82001, 82002, 38710)));
     }
 
-
-    /**
-     * TODO 仅用来测试 "key-()":"verifyAccess()"
-     *
-     * @param request
-     * @return
-     * @throws Exception
-     */
-    public Object verifyAccess(@NotNull JSONObject request) throws Exception {
-        long userId = request.getLongValue(com.hegp.framework.apijson.JSONObject.KEY_USER_ID);
-        RequestRole role = RequestRole.get(request.getString(com.hegp.framework.apijson.JSONObject.KEY_ROLE));
-        if (role == RequestRole.OWNER && userId != DemoVerifier.getVisitorId(session)) {
-            throw new IllegalAccessException("登录用户与角色OWNER不匹配！");
-        }
-        return null;
-    }
-
-
     public double plus(@NotNull JSONObject request, String i0, String i1) {
         return request.getDoubleValue(i0) + request.getDoubleValue(i1);
     }

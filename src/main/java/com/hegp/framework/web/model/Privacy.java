@@ -17,10 +17,10 @@ import com.hegp.framework.apijson.MethodAccess;
  * @author Lemon
  */
 @MethodAccess(
-        GET = {},
-        GETS = {OWNER, ADMIN},
-        POST = {UNKNOWN, ADMIN},
-        DELETE = {ADMIN}
+    GET = {},
+    GETS = {OWNER, ADMIN},
+    POST = {UNKNOWN, ADMIN},
+    DELETE = {ADMIN}
 )
 public class Privacy extends BaseModel {
     private static final long serialVersionUID = 1L;
