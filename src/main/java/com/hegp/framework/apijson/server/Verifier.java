@@ -12,7 +12,6 @@ public interface Verifier<T> {
 
 	/**验证权限是否通过
 	 * @param config
-	 * @param visitor
 	 * @return
 	 * @throws Exception
 	 */
@@ -29,12 +28,10 @@ public interface Verifier<T> {
 	void verifyRole(String table, RequestMethod method, RequestRole role) throws Exception;
 
 	/**登录校验
-	 * @param config
 	 * @throws Exception
 	 */
 	void verifyLogin() throws Exception;
 	/**管理员角色校验
-	 * @param config
 	 * @throws Exception
 	 */
 	void verifyAdmin() throws Exception;

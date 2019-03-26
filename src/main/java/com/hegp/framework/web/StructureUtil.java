@@ -39,8 +39,8 @@ public class StructureUtil {
 		};
 
 		try {
-			JSONObject request = JSON.parseObject("{\"User\":{\"id\":0, \"name\":\"tommy\", \"phone\":\"12345678\", \"sex\":1}}");
-			System.out.println("============="+Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), request, creator, null));
+			String result = new DemoParser(RequestMethod.GET).parse("{ \"[]\": { \"page\":0, \"count\":100, \"User\": { \"sex\":0 } } }");
+			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -77,7 +77,7 @@ public class StructureUtil {
 //		}
 //
 //
-		JSONObject response;
+//		JSONObject response;
 //		try {
 //			response = JSON.parseObject("{\"User\":{\"userId\":0}}");
 //			Log.d(TAG, "test  parseResponse = " + Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), response, creator, null));
@@ -96,12 +96,12 @@ public class StructureUtil {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-		try {
-			response = JSON.parseObject("{\"User\":{\"id\":0, \"name\":\"tommy\", \"phone\":\"12345678\", \"sex\":1}}");
-			Log.d(TAG, "test  parseResponse = " + Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), response,creator, null));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			response = JSON.parseObject("{\"User\":{\"id\":0, \"name\":\"tommy\", \"phone\":\"12345678\", \"sex\":1}}");
+//			Log.d(TAG, "test  parseResponse = " + Structure.parseResponse(RequestMethod.GET, "", JSON.parseObject(responseString), response,creator, null));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 	}
 
