@@ -11,42 +11,44 @@ import com.hegp.framework.apijson.server.SQLExecutor;
 import com.hegp.framework.apijson.server.Structure;
 
 
-/**结构校验
+/**
+ * 结构校验
+ *
  * @author Lemon
  */
 public class StructureUtil {
-	private static final String TAG = "Structure";
+    private static final String TAG = "Structure";
 
 
-	static final String requestString = "{\"Comment\":{\"DISALLOW\": \"id\", \"NECESSARY\": \"userId,momentId,content\"}, \"ADD\":{\"Comment:to\":{}}}";
-	static final String responseString = "{\"User\":{\"REMOVE\": \"phone\", \"REPLACE\":{\"sex\":2}, \"ADD\":{\"name\":\"api\"}}, \"PUT\":{\"Comment:to\":{}}}";
-	/**测试
-	 * @throws Exception
-	 */
-	public static void test() throws Exception {
+    static final String requestString = "{\"Comment\":{\"DISALLOW\": \"id\", \"NECESSARY\": \"userId,momentId,content\"}, \"ADD\":{\"Comment:to\":{}}}";
+    static final String responseString = "{\"User\":{\"REMOVE\": \"phone\", \"REPLACE\":{\"sex\":2}, \"ADD\":{\"name\":\"api\"}}, \"PUT\":{\"Comment:to\":{}}}";
 
-		SQLCreator creator = new SQLCreator() {
-			
-			@Override
-			public SQLConfig createSQLConfig() {
-				return new DemoSQLConfig();
-			}
-			
-			@Override
-			public SQLExecutor createSQLExecutor() {
-				return new DemoSQLExecutor();
-			}
-		};
+    /**
+     * 测试
+     *
+     * @throws Exception
+     */
+    public static void test() throws Exception {
 
-		try {
-			String result = new DemoParser(RequestMethod.GET).parse("{ \"[]\": { \"page\":0, \"count\":100, \"User\": { \"sex\":0 } } }");
-			System.out.println(result);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        SQLCreator creator = new SQLCreator() {
 
+            @Override
+            public SQLConfig createSQLConfig() {
+                return new DemoSQLConfig();
+            }
 
+            @Override
+            public SQLExecutor createSQLExecutor() {
+                return new DemoSQLExecutor();
+            }
+        };
 
+        try {
+            String result = new DemoParser(RequestMethod.GET).parse("{ \"[]\": { \"page\":0, \"count\":100, \"User\": { \"sex\":0 } } }");
+            System.out.println(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
 //		try {
@@ -103,9 +105,7 @@ public class StructureUtil {
 //			e.printStackTrace();
 //		}
 
-	}
+    }
 
 
-	
-	
 }

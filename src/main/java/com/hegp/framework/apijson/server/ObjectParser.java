@@ -9,133 +9,162 @@ import com.alibaba.fastjson.JSONObject;
 import com.hegp.framework.apijson.NotNull;
 import com.hegp.framework.apijson.RequestMethod;
 
-/**简化Parser，getObject和getArray(getArrayConfig)都能用
+/**
+ * 简化Parser，getObject和getArray(getArrayConfig)都能用
+ *
  * @author Lemon
  */
 public interface ObjectParser {
 
 
-	/**解析成员
-	 * response重新赋值
-	 * @param config 传递给第0个Table
-	 * @return null or this
-	 * @throws Exception
-	 */
-	ObjectParser parse() throws Exception;
+    /**
+     * 解析成员
+     * response重新赋值
+     *
+     * @param config 传递给第0个Table
+     * @return null or this
+     * @throws Exception
+     */
+    ObjectParser parse() throws Exception;
 
-	/**解析 @correct 校正
-	 * @throws Exception 
-	 */
-	ObjectParser parseCorrect() throws Exception;
-	
-	/**
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
-	JSONObject parseResponse(@NotNull JSONRequest request) throws Exception;
+    /**
+     * 解析 @correct 校正
+     *
+     * @throws Exception
+     */
+    ObjectParser parseCorrect() throws Exception;
 
-
-
-	/**解析普通成员
-	 * @param key
-	 * @param value
-	 * @return whether parse succeed
-	 */
-	boolean onParse(@NotNull String key, @NotNull Object value) throws Exception;
-
-	/**解析子对象
-	 * @param index
-	 * @param key
-	 * @param value
-	 * @return
-	 * @throws Exception
-	 */
-	JSON onChildParse(int index, String key, JSONObject value) throws Exception;
-	
-	/**解析赋值引用
-	 * @param path
-	 * @return
-	 */
-	Object onReferenceParse(@NotNull String path);
-
-	//TODO 改用 MySQL json_add,json_remove,json_contains 等函数！ 
-	/**PUT key:[]
-	 * @param key
-	 * @param array
-	 * @throws Exception
-	 */
-	void onPUTArrayParse(@NotNull String key, @NotNull JSONArray array) throws Exception;
-
-	/**SQL 配置，for single object
-	 * @return {@link #setSQLConfig(int, int, int)}
-	 * @throws Exception
-	 */
-	ObjectParser setSQLConfig() throws Exception;
-
-	/**SQL 配置
-	 * @return 
-	 * @throws Exception
-	 */
-	ObjectParser setSQLConfig(int count, int page, int position) throws Exception;
-	
-	
-	/**执行 SQL
-	 * @return 
-	 * @throws Exception
-	 */
-	ObjectParser executeSQL() throws Exception;
-
-	
-	/**
-	 * @return
-	 * @throws Exception
-	 */
-	JSONObject onSQLExecute() throws Exception;
-	
-	
-	/**
-	 * @return response
-	 * @throws Exception
-	 */
-	JSONObject response() throws Exception;
-
-	void onFunctionResponse(String type) throws Exception;
-
-	void onChildResponse() throws Exception;
-	
-
-	SQLConfig newSQLConfig() throws Exception;
-
-	/**
-	 * response has the final value after parse (and query if isTableKey)
-	 */
-	void onComplete();
+    /**
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    JSONObject parseResponse(@NotNull JSONRequest request) throws Exception;
 
 
-	/**回收内存
-	 */
-	void recycle();
+    /**
+     * 解析普通成员
+     *
+     * @param key
+     * @param value
+     * @return whether parse succeed
+     */
+    boolean onParse(@NotNull String key, @NotNull Object value) throws Exception;
+
+    /**
+     * 解析子对象
+     *
+     * @param index
+     * @param key
+     * @param value
+     * @return
+     * @throws Exception
+     */
+    JSON onChildParse(int index, String key, JSONObject value) throws Exception;
+
+    /**
+     * 解析赋值引用
+     *
+     * @param path
+     * @return
+     */
+    Object onReferenceParse(@NotNull String path);
+
+    //TODO 改用 MySQL json_add,json_remove,json_contains 等函数！
+
+    /**
+     * PUT key:[]
+     *
+     * @param key
+     * @param array
+     * @throws Exception
+     */
+    void onPUTArrayParse(@NotNull String key, @NotNull JSONArray array) throws Exception;
+
+    /**
+     * SQL 配置，for single object
+     *
+     * @return {@link #setSQLConfig(int, int, int)}
+     * @throws Exception
+     */
+    ObjectParser setSQLConfig() throws Exception;
+
+    /**
+     * SQL 配置
+     *
+     * @return
+     * @throws Exception
+     */
+    ObjectParser setSQLConfig(int count, int page, int position) throws Exception;
 
 
+    /**
+     * 执行 SQL
+     *
+     * @return
+     * @throws Exception
+     */
+    ObjectParser executeSQL() throws Exception;
 
-	ObjectParser setMethod(RequestMethod method);
-	RequestMethod getMethod();
+
+    /**
+     * @return
+     * @throws Exception
+     */
+    JSONObject onSQLExecute() throws Exception;
 
 
-	boolean isTable();
-	String getPath();
-	String getTable();
-	SQLConfig getArrayConfig();
+    /**
+     * @return response
+     * @throws Exception
+     */
+    JSONObject response() throws Exception;
 
-	SQLConfig getSQLConfig();
-	JSONObject getResponse();
-	JSONObject getSqlRequest();
-	JSONObject getSqlReponse();
+    void onFunctionResponse(String type) throws Exception;
 
-	Map<String, Object> getCustomMap();
-	Map<String, Map<String, String>> getFunctionMap();
-	Map<String, JSONObject> getChildMap();
+    void onChildResponse() throws Exception;
+
+
+    SQLConfig newSQLConfig() throws Exception;
+
+    /**
+     * response has the final value after parse (and query if isTableKey)
+     */
+    void onComplete();
+
+
+    /**
+     * 回收内存
+     */
+    void recycle();
+
+
+    ObjectParser setMethod(RequestMethod method);
+
+    RequestMethod getMethod();
+
+
+    boolean isTable();
+
+    String getPath();
+
+    String getTable();
+
+    SQLConfig getArrayConfig();
+
+    SQLConfig getSQLConfig();
+
+    JSONObject getResponse();
+
+    JSONObject getSqlRequest();
+
+    JSONObject getSqlReponse();
+
+    Map<String, Object> getCustomMap();
+
+    Map<String, Map<String, String>> getFunctionMap();
+
+    Map<String, JSONObject> getChildMap();
 
 
 }
