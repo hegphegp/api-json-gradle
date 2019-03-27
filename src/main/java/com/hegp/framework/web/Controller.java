@@ -61,7 +61,7 @@ public class Controller {
      * @return
      * @see {@link RequestMethod#GET}
      */
-    @PostMapping(value = "get")
+    @PostMapping(value = "/get")
     public String get(@RequestBody String request, HttpSession session) {
         return new DemoParser(GET).setSession(session).parse(request);
     }
@@ -74,7 +74,7 @@ public class Controller {
      * @return
      * @see {@link RequestMethod#HEAD}
      */
-    @PostMapping("head")
+    @PostMapping("/head")
     public String head(@RequestBody String request, HttpSession session) {
         return new DemoParser(HEAD).setSession(session).parse(request);
     }
@@ -87,7 +87,7 @@ public class Controller {
      * @return
      * @see {@link RequestMethod#GETS}
      */
-    @PostMapping("gets")
+    @PostMapping("/gets")
     public String gets(@RequestBody String request, HttpSession session) {
         return new DemoParser(GETS).setSession(session).parse(request);
     }
@@ -100,7 +100,7 @@ public class Controller {
      * @return
      * @see {@link RequestMethod#HEADS}
      */
-    @PostMapping("heads")
+    @PostMapping("/heads")
     public String heads(@RequestBody String request, HttpSession session) {
         return new DemoParser(HEADS).setSession(session).parse(request);
     }
@@ -113,7 +113,7 @@ public class Controller {
      * @return
      * @see {@link RequestMethod#POST}
      */
-    @PostMapping("post")
+    @PostMapping("/post")
     public String post(@RequestBody String request, HttpSession session) {
         return new DemoParser(POST).setSession(session).parse(request);
     }
@@ -126,7 +126,7 @@ public class Controller {
      * @return
      * @see {@link RequestMethod#PUT}
      */
-    @PostMapping("put")
+    @PostMapping("/put")
     public String put(@RequestBody String request, HttpSession session) {
         return new DemoParser(PUT).setSession(session).parse(request);
     }
@@ -139,7 +139,7 @@ public class Controller {
      * @return
      * @see {@link RequestMethod#DELETE}
      */
-    @PostMapping("delete")
+    @PostMapping("/delete")
     public String delete(@RequestBody String request, HttpSession session) {
         return new DemoParser(DELETE).setSession(session).parse(request);
     }
@@ -154,7 +154,7 @@ public class Controller {
      * @return
      * @see {@link RequestMethod#GET}
      */
-    @RequestMapping("get/{request}")
+    @RequestMapping("/get/{request}")
     public String openGet(@PathVariable String request, HttpSession session) {
         try {
             request = URLDecoder.decode(request, StringUtil.UTF_8);
@@ -173,7 +173,7 @@ public class Controller {
      * @return
      * @see {@link RequestMethod#HEAD}
      */
-    @RequestMapping("head/{request}")
+    @RequestMapping("/head/{request}")
     public String openHead(@PathVariable String request, HttpSession session) {
         try {
             request = URLDecoder.decode(request, StringUtil.UTF_8);
@@ -220,7 +220,7 @@ public class Controller {
      * @param request
      * @return
      */
-    @PostMapping("post/verify")
+    @PostMapping("/post/verify")
     public JSONObject postVerify(@RequestBody String request) {
         JSONObject requestObject = null;
         int type;
@@ -263,7 +263,7 @@ public class Controller {
      * @param request
      * @return
      */
-    @PostMapping("gets/verify")
+    @PostMapping("/gets/verify")
     public JSONObject getVerify(@RequestBody String request) {
         JSONObject requestObject = null;
         int type;
@@ -284,7 +284,7 @@ public class Controller {
      * @param request
      * @return
      */
-    @PostMapping("heads/verify")
+    @PostMapping("/heads/verify")
     public JSONObject headVerify(@RequestBody String request) {
         JSONObject requestObject = null;
         int type;
@@ -498,7 +498,7 @@ public class Controller {
      * @param session
      * @return
      */
-    @PostMapping("logout")
+    @PostMapping("/logout")
     public JSONObject logout(HttpSession session) {
         long userId;
         try {
@@ -656,7 +656,7 @@ public class Controller {
      * }
      * </pre>
      */
-    @PostMapping("put/password")
+    @PostMapping("/put/password")
     public JSONObject putPassword(@RequestBody String request) {
         JSONObject requestObject = null;
         String oldPassword;
@@ -773,7 +773,7 @@ public class Controller {
      * }
      * </pre>
      */
-    @PostMapping("put/balance")
+    @PostMapping("/put/balance")
     public JSONObject putBalance(@RequestBody String request, HttpSession session) {
         JSONObject requestObject = null;
         JSONObject privacyObj;
