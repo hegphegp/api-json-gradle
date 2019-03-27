@@ -33,7 +33,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import com.hegp.framework.apijson.JSON;
 import com.hegp.framework.apijson.JSONResponse;
-import com.hegp.framework.apijson.Log;
 import com.hegp.framework.apijson.NotNull;
 import com.hegp.framework.apijson.RequestMethod;
 import com.hegp.framework.apijson.StringUtil;
@@ -85,11 +84,7 @@ public class Structure {
      */
     public static JSONObject parseRequest(@NotNull final RequestMethod method, final String name
             , final JSONObject target, final JSONObject request, final int maxUpdateCount, final SQLCreator creator) throws Exception {
-        Log.i(TAG, "parseRequest  method = " + method + "; name = " + name
-                + "; target = \n" + JSON.toJSONString(target)
-                + "\n request = \n" + JSON.toJSONString(request));
         if (target == null || request == null) {// || request.isEmpty()) {
-            Log.i(TAG, "parseRequest  target == null || request == null >> return null;");
             return null;
         }
 
@@ -193,11 +188,7 @@ public class Structure {
      */
     public static JSONObject parseResponse(@NotNull final RequestMethod method, final String name
             , final JSONObject target, final JSONObject response, SQLCreator creator, OnParseCallback callback) throws Exception {
-        Log.i(TAG, "parseResponse  method = " + method + "; name = " + name
-                + "; target = \n" + JSON.toJSONString(target)
-                + "\n response = \n" + JSON.toJSONString(response));
         if (target == null || response == null) {// || target.isEmpty() {
-            Log.i(TAG, "parseRequest  target == null || response == null >> return response;");
             return response;
         }
 
@@ -211,7 +202,6 @@ public class Structure {
      * 对request和response不同的解析用callback返回
      *
      * @param target
-     * @param request
      * @param callback
      * @param creator
      * @return
@@ -378,7 +368,6 @@ public class Structure {
         }
         //校验重复>>>>>>>>>>>>>>>>>>>
 
-        Log.i(TAG, "parse  return real = " + JSON.toJSONString(real));
         return real;
     }
 
@@ -763,7 +752,6 @@ public class Structure {
      */
     public static void verifyRepeat(String table, String key, Object value, long exceptId, @NotNull SQLCreator creator) throws Exception {
         if (key == null || value == null) {
-            Log.e(TAG, "verifyRepeat  key == null || value == null >> return;");
             return;
         }
         if (value instanceof JSON) {

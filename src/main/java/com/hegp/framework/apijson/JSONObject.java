@@ -469,7 +469,6 @@ public class JSONObject extends com.alibaba.fastjson.JSONObject {
     @Override
     public Object put(String key, Object value) {
         if (value == null) {
-            Log.e(TAG, "put  value == null >> return null;");
             return null;
         }
         if (StringUtil.isEmpty(key, true)) {

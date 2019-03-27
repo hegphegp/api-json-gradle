@@ -9,7 +9,6 @@ import com.hegp.framework.web.model.Moment;
 import com.hegp.framework.web.model.Privacy;
 import com.hegp.framework.web.model.User;
 import com.hegp.framework.web.model.Verify;
-import com.hegp.framework.apijson.Log;
 import com.hegp.framework.apijson.MethodAccess;
 import com.hegp.framework.apijson.server.AbstractVerifier;
 import com.hegp.framework.apijson.server.Visitor;
@@ -43,7 +42,6 @@ public class DemoVerifier extends AbstractVerifier<Long> {
      * 登录校验
      */
     public static void verifyLogin(HttpSession session) throws Exception {
-        Log.d(TAG, "verifyLogin  session.getId() = " + (session == null ? null : session.getId()));
         new DemoVerifier().setVisitor(getVisitor(session)).verifyLogin();
     }
 

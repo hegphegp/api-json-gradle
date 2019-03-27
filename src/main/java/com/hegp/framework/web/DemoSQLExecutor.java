@@ -21,7 +21,6 @@ import org.postgresql.util.PGobject;
 import com.alibaba.fastjson.JSONObject;
 
 import com.hegp.framework.apijson.JSON;
-import com.hegp.framework.apijson.Log;
 import com.hegp.framework.apijson.server.AbstractSQLExecutor;
 import com.hegp.framework.apijson.server.SQLConfig;
 
@@ -31,14 +30,12 @@ public class DemoSQLExecutor extends AbstractSQLExecutor {
     static {
         try { //加载驱动程序
             Class.forName("com.mysql.jdbc.Driver");
-            Log.d(TAG, "成功加载 MySQL 驱动！");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
         try { //加载驱动程序
             Class.forName("org.postgresql.Driver");
-            Log.d(TAG, "成功加载 PostgresSQL 驱动！");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -61,8 +58,6 @@ public class DemoSQLExecutor extends AbstractSQLExecutor {
     private PreparedStatement getStatement(@NotNull SQLConfig config) throws Exception {
         Connection connection = connectionMap.get(config.getDatabase());
         if (connection == null || connection.isClosed()) {
-            Log.i(TAG, "select  connection " + (connection == null ? " = null" : ("isClosed = " + connection.isClosed())));
-
             if (DemoSQLConfig.DATABASE_POSTGRESQL.equals(config.getDatabase())) { //PostgreSQL 不允许 cross-database
                 connection = DriverManager.getConnection(config.getDBUri(), config.getDBAccount(), config.getDBPassword());
             } else {

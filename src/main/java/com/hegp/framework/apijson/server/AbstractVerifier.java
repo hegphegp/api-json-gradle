@@ -21,7 +21,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import com.hegp.framework.apijson.JSON;
 import com.hegp.framework.apijson.JSONResponse;
-import com.hegp.framework.apijson.Log;
 import com.hegp.framework.apijson.MethodAccess;
 import com.hegp.framework.apijson.NotNull;
 import com.hegp.framework.apijson.RequestMethod;
@@ -54,19 +53,7 @@ public abstract class AbstractVerifier<T> implements Verifier<T> {
     public static final Map<String, Map<RequestMethod, RequestRole[]>> ACCESS_MAP;
 
     static {
-        ACCESS_MAP = new HashMap<String, Map<RequestMethod, RequestRole[]>>();
-
-        if (Log.DEBUG) {
-            ACCESS_MAP.put(Table.class.getSimpleName(), getAccessMap(Table.class.getAnnotation(MethodAccess.class)));
-            ACCESS_MAP.put(Column.class.getSimpleName(), getAccessMap(Column.class.getAnnotation(MethodAccess.class)));
-            ACCESS_MAP.put(Test.class.getSimpleName(), getAccessMap(Test.class.getAnnotation(MethodAccess.class)));
-            ACCESS_MAP.put(Request.class.getSimpleName(), getAccessMap(Request.class.getAnnotation(MethodAccess.class)));
-            ACCESS_MAP.put(Response.class.getSimpleName(), getAccessMap(Response.class.getAnnotation(MethodAccess.class)));
-            ACCESS_MAP.put(Document.class.getSimpleName(), getAccessMap(Document.class.getAnnotation(MethodAccess.class)));
-            ACCESS_MAP.put(TestRecord.class.getSimpleName(), getAccessMap(TestRecord.class.getAnnotation(MethodAccess.class)));
-            ACCESS_MAP.put(Function.class.getSimpleName(), getAccessMap(Function.class.getAnnotation(MethodAccess.class)));
-            ACCESS_MAP.put(Access.class.getSimpleName(), getAccessMap(Access.class.getAnnotation(MethodAccess.class)));
-        }
+        ACCESS_MAP = new HashMap();
     }
 
     /**
@@ -263,7 +250,6 @@ public abstract class AbstractVerifier<T> implements Verifier<T> {
      * @see {@link com.hegp.framework.apijson.JSONObject#KEY_ROLE}
      */
     public void verifyRole(String table, RequestMethod method, RequestRole role) throws Exception {
-        Log.d(TAG, "verifyRole  table = " + table + "; method = " + method + "; role = " + role);
         if (table != null) {
             if (method == null) {
                 method = GET;
@@ -339,7 +325,6 @@ public abstract class AbstractVerifier<T> implements Verifier<T> {
     @Override
     public void verifyRepeat(String table, String key, Object value, long exceptId) throws Exception {
         if (key == null || value == null) {
-            Log.e(TAG, "verifyRepeat  key == null || value == null >> return;");
             return;
         }
         if (value instanceof JSON) {

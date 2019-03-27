@@ -13,7 +13,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.hegp.framework.web.model.BaseModel;
 import com.hegp.framework.apijson.JSON;
 import com.hegp.framework.apijson.JSONResponse;
-import com.hegp.framework.apijson.Log;
 import com.hegp.framework.apijson.NotNull;
 import com.hegp.framework.apijson.RequestMethod;
 import com.hegp.framework.apijson.RequestRole;
@@ -60,13 +59,6 @@ public class DemoFunction extends RemoteFunction {
         object.put("key", true);
         request.put("object", object);
 
-
-        Log.i(TAG, "plus(1,-2) = " + new DemoFunction(null, null).invoke("plus(i0,i1)", request));
-        Log.i(TAG, "count([1,2,4,10]) = " + new DemoFunction(null, null).invoke("countArray(array)", request));
-        Log.i(TAG, "isContain([1,2,4,10], 10) = " + new DemoFunction(null, null).invoke("isContain(array,id)", request));
-        Log.i(TAG, "getFromArray([1,2,4,10], 0) = " + new DemoFunction(null, null).invoke("getFromArray(array,@position)", request));
-        Log.i(TAG, "getFromObject({key:true}, key) = " + new DemoFunction(null, null).invoke("getFromObject(object,key)", request));
-
         forceUseable();
     }
 
@@ -91,13 +83,11 @@ public class DemoFunction extends RemoteFunction {
 
         JSONObject response = new DemoParser(RequestMethod.GET, true).parseResponse(request);
         if (JSONResponse.isSuccess(response) == false) {
-            Log.e(TAG, "\n\n\n\n\n !!!! 查询远程函数异常 !!!\n" + response.getString(JSONResponse.KEY_MSG) + "\n\n\n\n\n");
             return;
         }
 
         JSONArray fl = response.getJSONArray("Function[]");
         if (fl == null || fl.isEmpty()) {
-            Log.d(TAG, "没有可用的远程函数");
             return;
         }
 
@@ -126,7 +116,6 @@ public class DemoFunction extends RemoteFunction {
     }
 
     private static void exitWithError(String msg) {
-        Log.e(TAG, "\n远程函数文档测试未通过！\n请新增 demo 里的函数，或修改 Function 表里的 demo 为已有的函数示例！\n保证前端看到的远程函数文档是正确的！！！\n\n原因：\n" + msg);
         System.exit(1);
     }
 

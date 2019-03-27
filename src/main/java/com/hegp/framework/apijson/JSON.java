@@ -75,7 +75,6 @@ public class JSON {
         try {
             return com.alibaba.fastjson.JSON.parse(obj instanceof String ? (String) obj : toJSONString(obj), features);
         } catch (Exception e) {
-            Log.i(TAG, "parse  catch \n" + e.getMessage());
         }
         return null;
     }
@@ -116,7 +115,6 @@ public class JSON {
         try {
             return com.alibaba.fastjson.JSON.parseObject(getCorrectJson(json), JSONObject.class, features);
         } catch (Exception e) {
-            Log.i(TAG, "parseObject  catch \n" + e.getMessage());
         }
         return null;
     }
@@ -141,14 +139,12 @@ public class JSON {
      */
     public static <T> T parseObject(String json, Class<T> clazz) {
         if (clazz == null) {
-            Log.e(TAG, "parseObject  clazz == null >> return null;");
         } else {
             try {
                 int features = com.alibaba.fastjson.JSON.DEFAULT_PARSER_FEATURE;
                 features |= Feature.OrderedField.getMask();
                 return com.alibaba.fastjson.JSON.parseObject(getCorrectJson(json), clazz, features);
             } catch (Exception e) {
-                Log.i(TAG, "parseObject  catch \n" + e.getMessage());
             }
         }
         return null;
@@ -187,7 +183,6 @@ public class JSON {
         try {
             return com.alibaba.fastjson.JSON.parseArray(getCorrectJson(json, true));
         } catch (Exception e) {
-            Log.i(TAG, "parseArray  catch \n" + e.getMessage());
         }
         return null;
     }
@@ -212,12 +207,11 @@ public class JSON {
      */
     public static <T> List<T> parseArray(String json, Class<T> clazz) {
         if (clazz == null) {
-            Log.e(TAG, "parseArray  clazz == null >> return null;");
         } else {
             try {
                 return com.alibaba.fastjson.JSON.parseArray(getCorrectJson(json, true), clazz);
             } catch (Exception e) {
-                Log.i(TAG, "parseArray  catch \n" + e.getMessage());
+                e.printStackTrace();
             }
         }
         return null;
@@ -236,7 +230,6 @@ public class JSON {
         try {
             return com.alibaba.fastjson.JSON.toJSONString(obj);
         } catch (Exception e) {
-            Log.e(TAG, "toJSONString  catch \n" + e.getMessage());
         }
         return null;
     }
@@ -255,7 +248,6 @@ public class JSON {
         try {
             return com.alibaba.fastjson.JSON.toJSONString(obj, features);
         } catch (Exception e) {
-            Log.e(TAG, "parseArray  catch \n" + e.getMessage());
         }
         return null;
     }
@@ -295,7 +287,6 @@ public class JSON {
                 JSONObject json = parseObject((String) obj);
                 return json != null && json.isEmpty() == false;
             } catch (Exception e) {
-                Log.e(TAG, "isJSONObject  catch \n" + e.getMessage());
             }
         }
 
@@ -317,7 +308,7 @@ public class JSON {
                 JSONArray json = parseArray((String) obj);
                 return json != null && json.isEmpty() == false;
             } catch (Exception e) {
-                Log.e(TAG, "isJSONArray  catch \n" + e.getMessage());
+                e.printStackTrace();
             }
         }
 

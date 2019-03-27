@@ -28,7 +28,6 @@ import com.hegp.framework.web.model.User;
 import com.hegp.framework.web.model.Verify;
 import com.hegp.framework.apijson.JSON;
 import com.hegp.framework.apijson.JSONResponse;
-import com.hegp.framework.apijson.Log;
 import com.hegp.framework.apijson.RequestMethod;
 import com.hegp.framework.apijson.StringUtil;
 import com.hegp.framework.apijson.server.JSONRequest;
@@ -63,7 +62,9 @@ public class Controller {
      */
     @PostMapping(value = "/get")
     public String get(@RequestBody String request, HttpSession session) {
-        return new DemoParser(GET).setSession(session).parse(request);
+        DemoParser demoParser = new DemoParser(GET);
+        demoParser.setSession(session);
+        return demoParser.parse(request);
     }
 
     /**
@@ -503,7 +504,6 @@ public class Controller {
         long userId;
         try {
             userId = DemoVerifier.getVisitorId(session);//必须在session.invalidate();前！
-            Log.d(TAG, "logout  userId = " + userId + "; session.getId() = " + (session == null ? null : session.getId()));
             session.invalidate();
         } catch (Exception e) {
             return DemoParser.newErrorResult(e);

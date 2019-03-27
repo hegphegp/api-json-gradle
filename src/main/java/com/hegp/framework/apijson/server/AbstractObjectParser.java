@@ -23,7 +23,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import com.hegp.framework.apijson.Log;
 import com.hegp.framework.apijson.NotNull;
 import com.hegp.framework.apijson.RequestMethod;
 import com.hegp.framework.apijson.StringUtil;
@@ -113,10 +112,6 @@ public abstract class AbstractObjectParser implements ObjectParser {
                 invalidate();
             }
         }
-
-
-        Log.d(TAG, "AbstractObjectParser  table = " + table + "; isTable = " + isTable);
-        Log.d(TAG, "AbstractObjectParser  isEmpty = " + isEmpty + "; tri = " + tri + "; drop = " + drop);
     }
 
     public static final Map<String, Pattern> COMPILE_MAP;
@@ -375,35 +370,26 @@ public abstract class AbstractObjectParser implements ObjectParser {
 
                 //先尝试获取，尽量保留缺省依赖路径，这样就不需要担心路径改变
                 Object target = onReferenceParse(targetPath);
-                Log.i(TAG, "onParse targetPath = " + targetPath + "; target = " + target);
 
                 if (target == null) {//String#equals(null)会出错
-                    Log.d(TAG, "onParse  target == null  >>  continue;");
                     return true;
                 }
                 if (target instanceof Map) { //target可能是从requestObject里取出的 {}
-                    Log.d(TAG, "onParse  target instanceof Map  >>  continue;");
                     return false;
                 }
                 if (targetPath.equals(target)) {//必须valuePath和保证getValueByPath传进去的一致！
-                    Log.d(TAG, "onParse  targetPath.equals(target)  >>");
 
                     //非查询关键词 @key 不影响查询，直接跳过
                     if (isTable && (key.startsWith("@") == false || JSONRequest.TABLE_KEY_LIST.contains(key))) {
-                        Log.e(TAG, "onParse  isTable && (key.startsWith(@) == false"
-                                + " || JSONRequest.TABLE_KEY_LIST.contains(key)) >>  return null;");
                         return false;//获取不到就不用再做无效的query了。不考虑 Table:{Table:{}}嵌套
                     } else {
-                        Log.d(TAG, "onParse  isTable(table) == false >> continue;");
                         return true;//舍去，对Table无影响
                     }
                 }
 
                 //直接替换原来的key@:path为key:target
-                Log.i(TAG, "onParse    >>  key = replaceKey; value = target;");
                 key = replaceKey;
                 value = target;
-                Log.d(TAG, "onParse key = " + key + "; value = " + value);
             } else {
                 throw new IllegalArgumentException(path + "/" + key + ":value 中 value 必须为 依赖路径String 或 SQL子查询JSONObject ！");
             }
@@ -486,8 +472,6 @@ public abstract class AbstractObjectParser implements ObjectParser {
                 invalidate();
             }
         }
-        Log.i(TAG, "onChildParse  ObjectParser.onParse  key = " + key + "; child = " + child);
-
         return isEmpty ? null : child;//只添加! isChildEmpty的值，可能数据库返回数据不够count
     }
 
@@ -504,7 +488,6 @@ public abstract class AbstractObjectParser implements ObjectParser {
     @Override
     public void onPUTArrayParse(@NotNull String key, @NotNull JSONArray array) throws Exception {
         if (isTable == false || array.isEmpty()) {
-            Log.e(TAG, "onPUTArrayParse  isTable == false || array == null || array.isEmpty() >> return;");
             return;
         }
 
@@ -610,7 +593,6 @@ public abstract class AbstractObjectParser implements ObjectParser {
             try {
                 sqlReponse = onSQLExecute();
             } catch (Exception e) {
-                Log.e(TAG, "getObject  try { response = getSQLObject(config2); } catch (Exception e) {");
                 if (e instanceof NotExistException) {//非严重异常，有时候只是数据不存在
                     //						e.printStackTrace();
                     sqlReponse = null;//内部吃掉异常，put到最外层

@@ -528,7 +528,6 @@ public class StringUtil {
         }
         number = getString(number);
         if (number.length() == 15) {
-            Log.i(TAG, "isIDCard number.length() == 15 old IDCard");
             currentString = number;
             return true;
         }
@@ -682,7 +681,6 @@ public class StringUtil {
      * @return
      */
     public static String getCorrectUrl(String url) {
-        Log.i(TAG, "getCorrectUrl : \n" + url);
         if (isNotEmpty(url, true) == false) {
             return "";
         }
@@ -779,7 +777,6 @@ public class StringUtil {
         }
         //单独写到getCorrectPrice? >>>>>>>>>>>>>>>>>>>>>>
 
-        Log.i(TAG, "getPrice  <<<<<<<<<<<<<<<<<< correctPrice =  " + correctPrice);
         if (correctPrice.contains("")) {
             //			if (correctPrice.startsWith(".")) {
             //				correctPrice = 0 + correctPrice;
@@ -789,7 +786,6 @@ public class StringUtil {
             }
         }
 
-        Log.i(TAG, "getPrice correctPrice =  " + correctPrice + " >>>>>>>>>>>>>>>>");
         return isNotEmpty(correctPrice, true) ? getPrice(new BigDecimal(0 + correctPrice), formatType) : getPrice(0, formatType);
     }
 

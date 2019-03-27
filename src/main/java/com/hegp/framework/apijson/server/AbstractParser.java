@@ -20,7 +20,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import com.hegp.framework.apijson.JSON;
 import com.hegp.framework.apijson.JSONResponse;
-import com.hegp.framework.apijson.Log;
 import com.hegp.framework.apijson.NotNull;
 import com.hegp.framework.apijson.RequestMethod;
 import com.hegp.framework.apijson.RequestRole;
@@ -241,9 +240,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
     @NotNull
     @Override
     public JSONObject parseResponse(String request) {
-        Log.d(TAG, "\n\n\n\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"
-                + requestMethod + "/parseResponse  request = \n" + request + "\n\n");
-
         try {
             requestObject = parseRequest(request);
         } catch (Exception e) {
@@ -262,10 +258,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
     @NotNull
     @Override
     public JSONObject parseResponse(JSONObject request) {
-        long startTime = System.currentTimeMillis();
-        Log.d(TAG, "parseResponse  startTime = " + startTime
-                + "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n\n ");
-
         requestObject = request;
 
         verifier = createVerifier().setVisitor(getVisitor());
@@ -308,7 +300,7 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         final String requestString = JSON.toJSONString(request);//request传进去解析后已经变了
 
 
-        queryResultMap = new HashMap<String, Object>();
+        queryResultMap = new HashMap();
 
         Exception error = null;
         sqlExecutor = createSQLExecutor();
@@ -328,17 +320,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         queryResultMap.clear();
 
         //会不会导致原来的session = null？		session = null;
-
-
-        Log.d(TAG, "\n\n\n\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n "
-                + requestMethod + "/parseResponse  request = \n" + requestString + "\n\n");
-
-        Log.d(TAG, "parse  return response = \n" + JSON.toJSONString(requestObject)
-                + "\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> \n\n\n");
-
-        long endTime = System.currentTimeMillis();
-        Log.d(TAG, "parseResponse  endTime = " + endTime + ";  duration = " + (endTime - startTime)
-                + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n\n");
 
         return globleFormat && JSONResponse.isSuccess(requestObject) ? new JSONResponse(requestObject) : requestObject;
     }
@@ -370,8 +351,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         if (config.getSchema() == null && globleSchema != null) {
             config.setSchema(globleSchema);
         }
-
-        Log.i(TAG, "executeSQL  config = " + JSON.toJSONString(config));
 
         if (noVerifyRole == false) {
             if (config.getRole() == null) {
@@ -654,8 +633,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
     @Override
     public JSONObject onObjectParse(final JSONObject request
             , String parentPath, String name, final SQLConfig arrayConfig, boolean isSubquery) throws Exception {
-        Log.i(TAG, "\ngetObject:  parentPath = " + parentPath
-                + ";\n name = " + name + "; request = " + JSON.toJSONString(request));
         if (request == null) {// Moment:{}   || request.isEmpty()) {//key-value条件
             return null;
         }
@@ -721,8 +698,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
      */
     @Override
     public JSONArray onArrayParse(JSONObject request, String parentPath, String name, boolean isSubquery) throws Exception {
-        Log.i(TAG, "\n\n\n getArray parentPath = " + parentPath
-                + "; name = " + name + "; request = " + JSON.toJSONString(request));
         //不能允许GETS，否则会被通过"[]":{"@role":"ADMIN"},"Table":{},"tag":"Table"绕过权限并能批量查询
         if (RequestMethod.isGetMethod(requestMethod, false) == false) {
             throw new UnsupportedOperationException("key[]:{}只支持GET方法！不允许传 " + name + ":{} ！");
@@ -782,17 +757,13 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         request.remove(JSONRequest.KEY_COUNT);
         request.remove(JSONRequest.KEY_PAGE);
         request.remove(JSONRequest.KEY_JOIN);
-        Log.d(TAG, "getArray  query = " + query + "; count = " + count + "; page = " + page + "; join = " + join);
 
         if (request.isEmpty()) {//如果条件成立，说明所有的 parentPath/name:request 中request都无效！！！
-            Log.e(TAG, "getArray  request.isEmpty() >> return null;");
             return null;
         }
 
 
         int size = count2 == 0 ? max : count2;//count为每页数量，size为第page页实际数量，max(size) = count
-        Log.d(TAG, "getArray  size = " + size + "; page = " + page);
-
 
         //key[]:{Table:{}}中key equals Table时 提取Table
         int index = name == null ? -1 : name.lastIndexOf("[]");
@@ -854,7 +825,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         request.put(JSONRequest.KEY_PAGE, page);
         request.put(JSONRequest.KEY_JOIN, join);
 
-        Log.i(TAG, "getArray  return response = \n" + JSON.toJSONString(response) + "\n>>>>>>>>>>>>>>>\n\n\n");
         return response;
     }
 
@@ -869,7 +839,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
     private List<Join> onJoinParse(String join, JSONObject request) throws Exception {
         String[] sArr = request == null || request.isEmpty() ? null : StringUtil.split(join);
         if (sArr == null || sArr.length <= 0) {
-            Log.e(TAG, "doJoin  sArr == null || sArr.length <= 0 >> return request;");
             return null;
         }
 
@@ -985,16 +954,13 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
      * @param table
      * @param key
      * @param obj
-     * @param targetKey
      * @return null ? 全部 : 有限的数组
      */
     private JSONObject getJoinObject(String table, JSONObject obj, String key) {
         if (obj == null || obj.isEmpty()) {
-            Log.e(TAG, "getIdList  obj == null || obj.isEmpty() >> return null;");
             return null;
         }
         if (StringUtil.isEmpty(key, true)) {
-            Log.e(TAG, "getIdList  StringUtil.isEmpty(key, true) >> return null;");
             return null;
         }
 
@@ -1060,7 +1026,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
      */
     protected static Object getValue(JSONObject parent, String[] pathKeys) {
         if (parent == null || pathKeys == null || pathKeys.length <= 0) {
-            Log.w(TAG, "getChild  parent == null || pathKeys == null || pathKeys.length <= 0 >> return parent;");
             return parent;
         }
 
@@ -1101,7 +1066,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
      * @return
      */
     public static String getAbsPath(String path, String name) {
-        Log.i(TAG, "getPath  path = " + path + "; name = " + name + " <<<<<<<<<<<<<");
         path = StringUtil.getString(path);
         name = StringUtil.getString(name);
         if (StringUtil.isNotEmpty(path, false)) {
@@ -1114,7 +1078,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         if (path.startsWith("/")) {
             path = path.substring(1);
         }
-        Log.i(TAG, "getPath  return " + path + " >>>>>>>>>>>>>>>>");
         return path;
     }
 
@@ -1162,9 +1125,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
      */
     @Override
     public synchronized void putQueryResult(String path, Object result) {
-        Log.i(TAG, "\n putQueryResult  valuePath = " + path + "; result = " + result + "\n <<<<<<<<<<<<<<<<<<<<<<<");
-        //		if (queryResultMap.containsKey(valuePath)) {//只保存被关联的value
-        Log.d(TAG, "putQueryResult  queryResultMap.containsKey(valuePath) >> queryResultMap.put(path, result);");
         queryResultMap.put(path, result);
         //		}
     }
@@ -1177,9 +1137,7 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
      */
     @Override
     public Object getValueByPath(String valuePath) {
-        Log.i(TAG, "<<<<<<<<<<<<<<< \n getValueByPath  valuePath = " + valuePath + "\n <<<<<<<<<<<<<<<<<<");
         if (StringUtil.isEmpty(valuePath, true)) {
-            Log.e(TAG, "getValueByPath  StringUtil.isNotEmpty(valuePath, true) == false >> return null;");
             return null;
         }
         Object target = queryResultMap.get(valuePath);
@@ -1196,8 +1154,6 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
                 try {
                     parent = (JSONObject) queryResultMap.get(path);
                 } catch (Exception e) {
-                    Log.e(TAG, "getValueByPath  try { parent = (JSONObject) queryResultMap.get(path); } catch { "
-                            + "\n parent not instanceof JSONObject!");
                     parent = null;
                 }
                 if (parent != null) {
@@ -1218,10 +1174,8 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         }
 
         if (parent != null) {
-            Log.i(TAG, "getValueByPath >> get from queryResultMap >> return  parent.get(keys[keys.length - 1]);");
             target = parent.get(keys[keys.length - 1]); //值为null应该报错NotExistExeption，一般都是id关联，不可为null，否则可能绕过安全机制
             if (target != null) {
-                Log.i(TAG, "getValueByPath >> getValue >> return target = " + target);
                 return target;
             }
         }
@@ -1230,11 +1184,9 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         //从requestObject中取值
         target = getValue(requestObject, StringUtil.splitPath(valuePath));
         if (target != null) {
-            Log.i(TAG, "getValueByPath >> getValue >> return target = " + target);
             return target;
         }
 
-        Log.i(TAG, "getValueByPath  return valuePath;");
         return valuePath;
     }
 
@@ -1245,8 +1197,7 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         try {
             return object.getJSONObject(key);
         } catch (Exception e) {
-            Log.i(TAG, "getJSONObject  try { return object.getJSONObject(key);"
-                    + " } catch (Exception e) { \n" + e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
@@ -1272,7 +1223,7 @@ public abstract class AbstractParser<T> implements Parser<T>, SQLCreator {
         try {
             return parseCorrectResponse(config.getTable(), sqlExecutor.execute(config));
         } catch (Exception e) {
-            if (Log.DEBUG == false && e instanceof SQLException) {
+            if (e instanceof SQLException) {
                 throw new SQLException("数据库驱动执行异常SQLException，非 Log.DEBUG 模式下不显示详情，避免泄漏真实模式名、表名等隐私信息", e);
             }
             throw e;

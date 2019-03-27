@@ -381,7 +381,6 @@ public class JSONResponse extends com.hegp.framework.apijson.JSONObject {
     public static JSONObject format(final JSONObject object) {
         //太长查看不方便，不如debug	 Log.i(TAG, "format  object = \n" + JSON.toJSONString(object));
         if (object == null || object.isEmpty()) {
-            Log.i(TAG, "format  object == null || object.isEmpty() >> return object;");
             return object;
         }
         JSONObject formatedObject = new JSONObject(true);
@@ -416,7 +415,6 @@ public class JSONResponse extends com.hegp.framework.apijson.JSONObject {
     public static JSONArray format(final JSONArray array) {
         //太长查看不方便，不如debug	 Log.i(TAG, "format  array = \n" + JSON.toJSONString(array));
         if (array == null || array.isEmpty()) {
-            Log.i(TAG, "format  array == null || array.isEmpty() >> return array;");
             return array;
         }
         JSONArray formatedArray = new JSONArray();
@@ -519,7 +517,6 @@ public class JSONResponse extends com.hegp.framework.apijson.JSONObject {
      */
     public static String formatKey(String fullName, boolean formatColon, boolean formatAt, boolean formatHyphen, boolean firstCase) {
         if (fullName == null) {
-            Log.w(TAG, "formatKey  fullName == null >> return null;");
             return null;
         }
 

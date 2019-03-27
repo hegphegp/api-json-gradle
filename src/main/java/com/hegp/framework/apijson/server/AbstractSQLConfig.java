@@ -37,7 +37,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import com.hegp.framework.apijson.JSON;
-import com.hegp.framework.apijson.Log;
 import com.hegp.framework.apijson.NotNull;
 import com.hegp.framework.apijson.RequestMethod;
 import com.hegp.framework.apijson.RequestRole;
@@ -1040,7 +1039,6 @@ public abstract class AbstractSQLConfig implements SQLConfig {
     public String getWhereString(boolean hasPrefix, RequestMethod method, Map<String, Object> where, Map<String, List<String>> combine, List<Join> joinList, boolean verifyName) throws Exception {
         Set<Entry<String, List<String>>> combineSet = combine == null ? null : combine.entrySet();
         if (combineSet == null || combineSet.isEmpty()) {
-            Log.w(TAG, "getWhereString  combineSet == null || combineSet.isEmpty() >> return \"\";");
             return "";
         }
 
@@ -1187,11 +1185,8 @@ public abstract class AbstractSQLConfig implements SQLConfig {
      */
     private String getWhereItem(String key, Object value
             , RequestMethod method, boolean verifyName) throws Exception {
-        Log.d(TAG, "getWhereItem  key = " + key);
         //避免筛选到全部	value = key == null ? null : where.get(key);
         if (key == null || value == null || key.startsWith("@") || key.endsWith("()")) {//关键字||方法, +或-直接报错
-            Log.d(TAG, "getWhereItem  key == null || value == null"
-                    + " || key.startsWith(@) || key.endsWith(()) >> continue;");
             return null;
         }
         if (key.endsWith("@")) {//引用
@@ -1328,7 +1323,6 @@ public abstract class AbstractSQLConfig implements SQLConfig {
 
         Logic logic = new Logic(key);
         key = logic.getKey();
-        Log.i(TAG, "getSearchString key = " + key);
 
         JSONArray arr = newJSONArray(value);
         if (arr.isEmpty()) {
@@ -1395,7 +1389,6 @@ public abstract class AbstractSQLConfig implements SQLConfig {
 
         Logic logic = new Logic(key);
         key = logic.getKey();
-        Log.i(TAG, "getRegExpString key = " + key);
 
         JSONArray arr = newJSONArray(value);
         if (arr.isEmpty()) {
@@ -1467,7 +1460,6 @@ public abstract class AbstractSQLConfig implements SQLConfig {
 
         Logic logic = new Logic(key);
         key = logic.getKey();
-        Log.i(TAG, "getBetweenString key = " + key);
 
         JSONArray arr = newJSONArray(value);
         if (arr.isEmpty()) {
@@ -1552,7 +1544,6 @@ public abstract class AbstractSQLConfig implements SQLConfig {
      */
     @JSONField(serialize = false)
     public String getRangeString(String key, Object range) throws Exception {
-        Log.i(TAG, "getRangeString key = " + key);
         if (range == null) {//依赖的对象都没有给出有效值，这个存在无意义。如果是客户端传的，那就能在客户端确定了。
             throw new NotExistException(TAG + "getRangeString(" + key + ", " + range
                     + ") range == null");
@@ -1560,7 +1551,6 @@ public abstract class AbstractSQLConfig implements SQLConfig {
 
         Logic logic = new Logic(key);
         key = logic.getKey();
-        Log.i(TAG, "getRangeString key = " + key);
 
         if (range instanceof List) {
             if (logic.isOr() || logic.isNot()) {
@@ -1643,7 +1633,6 @@ public abstract class AbstractSQLConfig implements SQLConfig {
 
         Logic logic = new Logic(key);
         key = logic.getKey();
-        Log.i(TAG, "getExistsString key = " + key);
 
         return (logic.isNot() ? NOT : "") + " EXISTS " + getSubqueryString((Subquery) value);
     }
@@ -1667,7 +1656,6 @@ public abstract class AbstractSQLConfig implements SQLConfig {
 
         Logic logic = new Logic(key);
         key = logic.getKey();
-        Log.i(TAG, "getContainString key = " + key);
 
         return getContainString(key, newJSONArray(value).toArray(), logic.getType());
     }
@@ -1887,7 +1875,6 @@ public abstract class AbstractSQLConfig implements SQLConfig {
     public static String getSQL(AbstractSQLConfig config) throws Exception {
         String tablePath = config == null ? null : config.getTablePath();
         if (StringUtil.isNotEmpty(tablePath, true) == false) {
-            Log.i(TAG, "getSQL  StringUtil.isNotEmpty(tablePath, true) == false >> return null;");
             return null;
         }
 
@@ -2420,10 +2407,7 @@ public abstract class AbstractSQLConfig implements SQLConfig {
      */
     public static String getRealKey(RequestMethod method, String originKey
             , boolean isTableKey, boolean saveLogic, boolean verifyName, String quote) throws Exception {
-        Log.i(TAG, "getRealKey  saveLogic = " + saveLogic + "; originKey = " + originKey);
         if (originKey == null || originKey.startsWith(quote) || com.hegp.framework.apijson.JSONObject.isArrayKey(originKey)) {
-            Log.w(TAG, "getRealKey  originKey == null || originKey.startsWith(`)"
-                    + " || zuo.biao.apijson.JSONObject.isArrayKey(originKey) >>  return originKey;");
             return originKey;
         }
 
@@ -2490,7 +2474,6 @@ public abstract class AbstractSQLConfig implements SQLConfig {
         if (saveLogic && last != null) {
             key = key + last;
         }
-        Log.i(TAG, "getRealKey  return key = " + key);
         return key;
     }
 

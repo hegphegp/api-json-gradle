@@ -15,7 +15,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import com.hegp.framework.apijson.JSONResponse;
-import com.hegp.framework.apijson.Log;
 import com.hegp.framework.apijson.NotNull;
 import com.hegp.framework.apijson.StringUtil;
 
@@ -50,7 +49,6 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
     @Override
     public synchronized void putCache(String sql, Map<Integer, JSONObject> map, boolean isStatic) {
         if (sql == null || map == null) { //空map有效，说明查询过sql了  || map.isEmpty()) {
-            Log.i(TAG, "saveList  sql == null || map == null >> return;");
             return;
         }
         //		if (isStatic) {
@@ -69,7 +67,6 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
     @Override
     public synchronized void removeCache(String sql, boolean isStatic) {
         if (sql == null) {
-            Log.i(TAG, "removeList  sql == null >> return;");
             return;
         }
         //		if (isStatic) {
@@ -117,7 +114,6 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
     @Override
     public JSONObject execute(SQLConfig config) throws Exception {
         if (config == null) {
-            Log.e(TAG, "select  config==null >> return null;");
             return null;
         }
         boolean prepared = config.isPrepared();
@@ -127,16 +123,11 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
         config.setPrepared(prepared);
 
         if (StringUtil.isEmpty(sql, true)) {
-            Log.e(TAG, "select  StringUtil.isEmpty(sql, true) >> return null;");
             return null;
         }
         JSONObject result = null;
 
         long startTime = System.currentTimeMillis();
-        Log.d(TAG, "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-                + "\n select  startTime = " + startTime
-                + "\n sql = \n " + sql
-                + "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 
         ResultSet rs = null;
         switch (config.getMethod()) {
@@ -173,16 +164,12 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
                 break;
 
             default://OPTIONS, TRACE等
-                Log.e(TAG, "select  sql = " + sql + " ; method = " + config.getMethod() + " >> return null;");
                 return null;
         }
 
-
         final int position = config.getPosition();
         result = getCache(sql, position, config.isCacheStatic());
-        Log.i(TAG, ">>> select  result = getCache('" + sql + "', " + position + ") = " + result);
         if (result != null) {
-            Log.d(TAG, "\n\n select  result != null >> return result;" + "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
             return result;
         }
 
@@ -206,7 +193,6 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
         int viceColumnStart = length + 1; //第一个副表字段的index
         while (rs.next()) {
             index++;
-            Log.d(TAG, "\n\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n select while (rs.next()){  index = " + index + "\n\n");
 
             result = new JSONObject(true);
 
@@ -231,9 +217,6 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
             }
 
             resultMap = onPutTable(config, rs, rsmd, resultMap, index, result);
-
-            Log.d(TAG, "\n select  while (rs.next()) { resultMap.put( " + index + ", result); "
-                    + "\n >>>>>>>>>>>>>>>>>>>>>>>>>>> \n\n");
         }
 
         rs.close();
@@ -258,11 +241,8 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
 
 
         putCache(sql, resultMap, config.isCacheStatic());
-        Log.i(TAG, ">>> select  putCache('" + sql + "', resultMap);  resultMap.size() = " + resultMap.size());
 
         long endTime = System.currentTimeMillis();
-        Log.d(TAG, "\n\n select  endTime = " + endTime + "; duration = " + (endTime - startTime)
-                + "\n return resultMap.get(" + position + ");" + "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
         return resultMap.get(position);
     }
 
@@ -283,7 +263,6 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
 
             for (Join j : joinList) {
                 if (j.isAppJoin() == false) {
-                    Log.i(TAG, "executeAppJoin  for (Join j : joinList) >> j.isAppJoin() == false >>  continue;");
                     continue;
                 }
 
@@ -304,7 +283,6 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
                     }
                 }
 
-
                 //替换为 "id{}": [userId1, userId2, userId3...]
                 jc.putWhere(j.getOriginKey(), null, false);
                 jc.putWhere(j.getKey() + "{}", targetValueList, false);
@@ -320,10 +298,6 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
                 }
 
                 long startTime = System.currentTimeMillis();
-                Log.d(TAG, "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-                        + "\n executeAppJoin  startTime = " + startTime
-                        + "\n sql = \n " + sql
-                        + "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 
                 //执行副表的批量查询 并 缓存到 childMap
                 ResultSet rs = executeQuery(jc);
@@ -337,7 +311,6 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
                 String cacheSql;
                 while (rs.next()) { //FIXME 同时有 @ APP JOIN 和 < 等 SQL JOIN 时，next = false 总是无法进入循环，导致缓存失效，可能是连接池或线程问题
                     index++;
-                    Log.d(TAG, "\n\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n executeAppJoin while (rs.next()){  index = " + index + "\n\n");
 
                     result = new JSONObject(true);
 
@@ -348,24 +321,16 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
 
                     //每个 result 都要用新的 SQL 来存 childResultMap = onPutTable(config, rs, rsmd, childResultMap, index, result);
 
-                    Log.d(TAG, "\n executeAppJoin  while (rs.next()) { resultMap.put( " + index + ", result); "
-                            + "\n >>>>>>>>>>>>>>>>>>>>>>>>>>> \n\n");
-
                     //缓存到 childMap
                     cc.putWhere(j.getKey(), result.get(j.getKey()), false);
                     cacheSql = cc.getSQL(false);
                     childMap.put(cacheSql, result);
 
-                    Log.d(TAG, ">>> executeAppJoin childMap.put('" + cacheSql + "', result);  childMap.size() = " + childMap.size());
                 }
 
                 rs.close();
 
-
                 long endTime = System.currentTimeMillis();
-                Log.d(TAG, "\n\n executeAppJoin  endTime = " + endTime + "; duration = " + (endTime - startTime)
-                        + "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
-
             }
         }
 
@@ -389,8 +354,6 @@ public abstract class AbstractSQLExecutor implements SQLExecutor {
             , final int tablePosition, @NotNull JSONObject table, final int columnIndex, Map<String, JSONObject> childMap) throws Exception {
 
         if (rsmd.getColumnName(columnIndex).startsWith("_")) {
-            Log.i(TAG, "select while (rs.next()){ ..."
-                    + " >>  rsmd.getColumnName(i).startsWith(_) >> continue;");
             return table;
         }
 
