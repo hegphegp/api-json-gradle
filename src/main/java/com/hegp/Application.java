@@ -1,8 +1,5 @@
 package com.hegp;
 
-import com.hegp.framework.web.DemoFunction;
-import com.hegp.framework.web.StructureUtil;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,16 +12,11 @@ import com.hegp.framework.apijson.Log;
 
 @Configuration
 @SpringBootApplication
-public class Application implements CommandLineRunner {
+public class Application {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
         Log.DEBUG = false; //上线生产环境前改为 false，可不输出 APIJSONORM 的日志 以及 SQLException 的原始(敏感)信息
-        StructureUtil.test();
     }
 
     @Bean
